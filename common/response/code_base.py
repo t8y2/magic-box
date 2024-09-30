@@ -1,5 +1,7 @@
 from enum import Enum
 
+from common.exception.handler import create_custom_exception
+
 
 class BaseStatus(Enum):
     """
@@ -17,16 +19,22 @@ class BaseStatus(Enum):
     UNKNOWN_ERROR = (1007, "服务器未知错误")
     HTTP_ERROR = (1008, "HTTP 异常")
 
+    # 获取错误码
     @property
     def code(self):
-        """
-        获取错误码
-        """
         return self.value[0]
 
+    # 获取错误码码信息
     @property
     def msg(self):
-        """
-        获取错误码码信息
-        """
         return self.value[1]
+
+
+# 创建异常类
+ClientError = create_custom_exception(BaseStatus.CLIENT_ERROR)
+MissParams = create_custom_exception(BaseStatus.MISS_PARAMS)
+Unauthorized = create_custom_exception(BaseStatus.UNAUTHORIZED)
+Forbidden = create_custom_exception(BaseStatus.FORBIDDEN)
+UnknownError = create_custom_exception(BaseStatus.UNKNOWN_ERROR)
+TooManyRequest = create_custom_exception(BaseStatus.TOO_MANY_REQUEST)
+ValidatorError = create_custom_exception(BaseStatus.VALIDATOR_ERROR)
