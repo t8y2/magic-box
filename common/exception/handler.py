@@ -82,3 +82,11 @@ def register_exception(app: FastAPI):
             status_code=status.HTTP_200_OK,
             content=await responseBase.fail(status=BaseStatus.UNKNOWN_ERROR, msg=str(exc)),
         )
+
+
+def create_custom_exception(status):
+    class CustomException(BaseCustomException):
+        def __init__(self, msg=None):
+            super().__init__(msg, status)
+
+    return CustomException
