@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  api:
+    build: .
+    container_name: magic-box
+    image: magic-box
+    restart: always
+    environment:
+      APP_ENV: local
+      TZ: "Asia/Shanghai"
+    ports:
+      - "6537:6537"
+    networks:
+      - my-app-network
+
+networks:
+  my-app-network:
+    external: true
