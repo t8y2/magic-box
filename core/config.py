@@ -46,15 +46,6 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    # TOS
-    TOS_REGION: str
-    VOLCENGINE_ACCESS: str
-    VOLCENGINE_SECRET: str
-    TOS_ACCOUNT_ID: str
-    TOS_ROLE_NAME: str
-    TOS_ENDPOINT: str
-    TOS_BUCKET_NAME: str
-
 
 @lru_cache
 def get_settings():
