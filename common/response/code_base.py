@@ -1,7 +1,5 @@
 from enum import Enum
 
-from common.exception.handler import create_custom_exception
-
 
 class BaseStatus(Enum):
     """
@@ -28,13 +26,3 @@ class BaseStatus(Enum):
     @property
     def msg(self):
         return self.value[1]
-
-
-# 创建异常类
-ClientError = create_custom_exception(BaseStatus.CLIENT_ERROR)
-MissParams = create_custom_exception(BaseStatus.MISS_PARAMS)
-Unauthorized = create_custom_exception(BaseStatus.UNAUTHORIZED)
-Forbidden = create_custom_exception(BaseStatus.FORBIDDEN)
-UnknownError = create_custom_exception(BaseStatus.UNKNOWN_ERROR)
-TooManyRequest = create_custom_exception(BaseStatus.TOO_MANY_REQUEST)
-ValidatorError = create_custom_exception(BaseStatus.VALIDATOR_ERROR)
