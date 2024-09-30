@@ -46,6 +46,14 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
+    # 火山云访问密钥 wangcy 子账号
+    VOLCENGINE_ACCESS: str
+    VOLCENGINE_SECRET: str
+
+    # 火山云对象存储
+    TOS_ENDPOINT: str
+    TOS_BUCKET_NAME: str
+    TOS_REGION: str
 
 @lru_cache
 def get_settings():
