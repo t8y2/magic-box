@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from common.response.schema import responseBase
-from schemas.image import HttpResizeImage
+from schemas.image import HttpResizeImage, HttpConvertImage
 from services.image import ImageService
 
 router = APIRouter()
@@ -13,4 +13,7 @@ async def resize(obj: HttpResizeImage):
     return await responseBase.success(data=resp)
 
 
-# 示例调用
+@router.post("/convert", summary="转换图片格式")
+async def convert(obj: HttpConvertImage):
+    resp = await ImageService.convert(obj)
+    return await responseBase.success(data=resp)
