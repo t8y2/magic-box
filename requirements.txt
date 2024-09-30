@@ -17,3 +17,5 @@ motor~=3.5.1
 funboost~=46.2
 pytz~=2020.5
 fire~=0.6.0
+
+pillow~=10.4.0

@@ -1,18 +1,11 @@
-import asyncio
-import json
-import sys
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from common.exception.handler import register_exception
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.gzip import GZipMiddleware
-from database.mongo import test_mongo, route_collection, role_collection, user_collection
+from database.mongo import test_mongo
 from database.redis import test_redis
 from middleware.access_middleware import AccessMiddleware
-from schemas.role import HttpCreateRole
-from schemas.user import HttpCreateUser
-from services.role import RoleService
-from services.user import UserService
 from utils.health_check import ensure_unique_route_names
 from controller.routers import v1
 from core.config import settings
@@ -77,5 +70,3 @@ def register_router(app: FastAPI):
     app.include_router(v1)
     # 额外检查路由是否唯一
     ensure_unique_route_names(app)
-
-
