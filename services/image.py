@@ -5,7 +5,7 @@ import requests
 from PIL import Image
 
 from common.response.code_image import DownloadError, MissingParams
-from schemas.image import HttpResizeImage, HttpConvertImage
+from schemas.image import HttpImageResize, HttpImageConvert, HttpImageBase
 
 
 class ImageService(object):
@@ -17,8 +17,8 @@ class ImageService(object):
         return BytesIO(response.content)
 
     @classmethod
-    async def resize(cls, obj: HttpResizeImage):
-        img_data = await cls.download(obj.file_url)
+    async def resize(cls, obj: HttpImageResize):
+        img_data = await cls.download(obj.file_uri)
         with Image.open(img_data) as img:
             original_width, original_height = img.size
             # 如果没有提供宽度或高度，则按比例缩放
@@ -38,11 +38,15 @@ class ImageService(object):
             return {"file_url": "mock_url"}
 
     @classmethod
-    async def convert(cls, obj: HttpConvertImage):
-        img_data = await cls.download(obj.file_url)
+    async def convert(cls, obj: HttpImageConvert):
+        img_data = await cls.download(obj.file_uri)
         with Image.open(img_data) as img:
             # 将图片保存到内存的二进制对象中，而不是保存到本地
             img_byte_array = io.BytesIO()
             img.save(img_byte_array, format=obj.final_type.upper())
             img_byte_array.seek(0)  # 重置文件指针到开始位置
             img.show()
+
+    @classmethod
+    async def rmbg(cls, obj: HttpImageBase):
+        img_data = await cls.download(obj.file_uri)
