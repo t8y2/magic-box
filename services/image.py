@@ -1,9 +1,7 @@
-import io
+import asyncio
 from io import BytesIO
-
 import requests
 from PIL import Image
-
 from common.response.code_image import DownloadError, MissingParams
 from schemas.image import HttpImageResize, HttpImageConvert, HttpImageBase
 
@@ -49,4 +47,15 @@ class ImageService(object):
 
     @classmethod
     async def rmbg(cls, obj: HttpImageBase):
-        img_data = await cls.download(obj.file_uri)
+        from transformers import pipeline
+        pipe = pipeline("image-segmentation", model="briaai/RMBG-1.4", trust_remote_code=True)
+        pillow_image = pipe(obj.file_uri)
+        pillow_image.show()
+
+
+if __name__ == '__main__':
+    asyncio.run(
+        ImageService.rmbg(
+            HttpImageBase(file_uri="https://farm5.staticflickr.com/4007/4322154488_997e69e4cf_z.jpg",
+                          file_name="111")
+        ))
