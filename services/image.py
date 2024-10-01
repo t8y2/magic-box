@@ -52,10 +52,26 @@ class ImageService(object):
         pillow_image = pipe(obj.file_uri)
         pillow_image.show()
 
+    @classmethod
+    async def HDRestore(cls):
+        from diffusers import LDMSuperResolutionPipeline
+        import torch
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        model_id = "CompVis/ldm-super-resolution-4x-openimages"
+
+        pipeline = LDMSuperResolutionPipeline.from_pretrained(model_id)
+        pipeline = pipeline.to(device)
+
+        url = "https://user-images.githubusercontent.com/38061659/199705896-b48e17b8-b231-47cd-a270-4ffa5a93fa3e.png"
+        response = requests.get(url)
+        low_res_img = Image.open(BytesIO(response.content)).convert("RGB")
+        low_res_img = low_res_img.resize((128, 128))
+
+        upscaled_image = pipeline(low_res_img, num_inference_steps=100, eta=1).images[0]
+        upscaled_image.save("ldm_generated_image.png")
+
 
 if __name__ == '__main__':
     asyncio.run(
-        ImageService.rmbg(
-            HttpImageBase(file_uri="https://farm5.staticflickr.com/4007/4322154488_997e69e4cf_z.jpg",
-                          file_name="111")
-        ))
+        ImageService.HDRestore()
+    )
